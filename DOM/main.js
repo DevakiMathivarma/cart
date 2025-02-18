@@ -15,15 +15,17 @@ const products = [{ id: 1, productName: "Wall Clock", productDes: "Wear it comfo
 { id: 1, productName: "Head Set", productDes: "Wear it comfort", productPrice: 'Price  :   2500rs', productButton: "Shop Now", productImage: 'headset.PNG' }
 
 ]
-let title=document.getElementById('title');
-title.innerText='Shopping Cart'
-title.style.textAlign='center'
-title.style.textShadow='3px 3px 3px  orange'
+let title = document.getElementById('title');
+title.innerText = 'Shopping Cart'
+title.style.textAlign = 'center'
+title.style.textShadow = '3px 3px 3px  orange'
 
 
 let container = document.querySelector("#container");
 
-
+let cart_arr=[];
+let cart = document.getElementById('cart');
+let totalcount = 0;
 products.map((val) => {
     let productItem = document.createElement("div");
     productItem.setAttribute('id', 'products')
@@ -45,44 +47,84 @@ products.map((val) => {
     let price = document.createElement('h5');
     price.innerText = val.productPrice;
     productItem.appendChild(price);
-    //h3 tag
-    let popup1=true;
-    function showpopup(){
-    let popup=document.createElement('h3');
-    if(popup1){
-    popup.innerText=`${val.productName} added to cart`
-    popup.classList.add('added')
-    }
-    else{
-        popup.innerText=`${val.productName} removed from cart`
-        popup.classList.remove('added')
-    }
-    document.body.appendChild(popup)
-    popup.style.position="fixed"
-    popup.style.top="50%"
-    popup.style.left="50%"
-    popup.style.transform="translate(-50%,-50%)"
-    popup.style.backgroundColor="grey"
-    popup.style.zIndex="999"
-    popup.style.padding="20px"
-    popup.style.boxShadow="0px 0px 10px rgba(0,0,0,0.2)"
-  popup.classList.toggle('added')
-    setTimeout(()=>{
-        popup.remove();
-    },2000)
+    price.style.fontSize = '15px'
+
+    //popup
    
-}
+    function showpopup() {
+        let popup = document.createElement('h3');
+        popup.innerText = `${val.productName} added to cart`
+        productItem.appendChild(popup)
+        popup.style.position = "fixed"
+        popup.style.top = "50%"
+        popup.style.left = "50%"
+        popup.style.transform = "translate(-50%,-50%)"
+        popup.style.backgroundColor = "grey"
+        popup.style.zIndex = "999"
+        popup.style.padding = "20px"
+        popup.style.width="200px"
+        setTimeout(() => {
+            popup.remove();
+        }, 2000)
+    }
+    //quantity
+
+    let quantity = document.createElement('div');
+    productItem.appendChild(quantity)
+    quantity.setAttribute('class', 'quantity')
+    let quantity1 = document.createElement('div');
+    quantity.appendChild(quantity1)
+    quantity1.setAttribute('class', 'add1')
+    let qcontent = document.createElement('h5');
+    qcontent.innerText = "Quantity:"
+    quantity1.appendChild(qcontent)
+    let quantity2 = document.createElement('div');
+    quantity.appendChild(quantity2)
+    quantity2.setAttribute('class', 'add')
+    let count = 0;
+    let qbutton = document.createElement('button');
+    qbutton.innerText = "+"
+    qbutton.addEventListener('click', (event) => {
+        count++;
+        span.innerText = count;
+        totalcount++;
+        cart.innerText=totalcount;
+
+    })
+    quantity2.appendChild(qbutton)
+    let span = document.createElement('span');
+    span.innerText = "0";
+    quantity2.appendChild(span)
+    let qbutton1 = document.createElement('button');
+    qbutton1.innerText = "-"
+    qbutton1.addEventListener('click', (event) => {
+        count>0?count--:count;
+        span.innerText = count;
+        totalcount>0?totalcount--:totalcount;
+        cart.innerText=totalcount;
+
+    })
+    quantity2.appendChild(qbutton1)
     //button
     let button = document.createElement('button');
-    button.setAttribute('class','btn')
+    button.setAttribute('class', 'btn')
     button.innerText = val.productButton;
     productItem.appendChild(button);
-    button.style.fontSize='15px';
-    button.style.fontWeight='bold';
-button.addEventListener('click',(event)=>{
-    showpopup();
-    popup1.classList.toggle('active')
-})
+    button.style.fontSize = '15px';
+    button.style.fontWeight = 'bold';
+    button.addEventListener('click', (event) => {
+        showpopup();
+        cart_arr.push(val);
+        console.log(cart_arr)
+        totalcount++;
+        cart.innerText = totalcount;
+       
+
+    })
+    
+
 
 })
+
+
 
